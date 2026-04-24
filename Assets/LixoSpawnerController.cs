@@ -18,14 +18,28 @@ public class LixoSpawnerController : MonoBehaviour
     private int counter = 0;
 
     IEnumerator SpawnRoutine()
+{
+    while (points < MaxPoints)
     {
-        while (points < MaxPoints)
-        {
-            Instantiate(Lixo, new Vector3(Random.Range(-maximumX, maximumX + 1), fixedY, fixedZ), Quaternion.identity);
-            yield return new WaitForSeconds(timer);
-        }
-        victoryText.gameObject.SetActive(true);
+        // Rotação aleatória
+        Quaternion rotacaoAleatoria = Quaternion.Euler(
+            Random.Range(0f, 360f),
+            Random.Range(0f, 360f),
+            Random.Range(0f, 360f)
+        );
+
+        // Instancia o lixo com posição e rotação aleatória
+        Instantiate(
+            Lixo,
+            new Vector3(Random.Range(-maximumX, maximumX + 1), fixedY, fixedZ),
+            rotacaoAleatoria
+        );
+
+        yield return new WaitForSeconds(timer);
     }
+
+    victoryText.gameObject.SetActive(true);
+}
 
     public void AddToPoints(int x)
     {
