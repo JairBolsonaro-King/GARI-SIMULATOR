@@ -4,29 +4,60 @@ using UnityEngine;
 
 public class LixeiraController : MonoBehaviour
 {
-    public float velocity;
+    public float velocity = 5f;
+    public float rotationSpeed = 5f;
 
-    // Start is called before the first frame update
+    private Quaternion targetRotation;
+
     void Start()
     {
-        
+        targetRotation = transform.rotation;
     }
 
-    // Update is called once per frame
     void Update()
     {
         float horizontalInput = Input.GetAxis("Horizontal");
-        this.transform.position += new Vector3(horizontalInput*velocity,0,0);
-        if(this.transform.position.x>10)
+
+        // Move object
+        transform.position += new Vector3(
+            horizontalInput * velocity * Time.deltaTime,
+            0,
+            0
+        );
+
+        // Set target rotation depending on direction
+        if (horizontalInput > 0)
         {
-            this.transform.position = new Vector3(10, 
-                                                  this.transform.position.y,
-                                                  this.transform.position.z);
-        }else if (this.transform.position.x<-10)
+            targetRotation = Quaternion.Euler(0, 0, 0); // Facing right
+        }
+        else if (horizontalInput < 0)
         {
-            this.transform.position = new Vector3(-10, 
-                                                  this.transform.position.y,
-                                                  this.transform.position.z);
+            targetRotation = Quaternion.Euler(0, -180, 0); // Facing left
+        }
+
+        // Smoothly rotate
+        transform.rotation = Quaternion.Lerp(
+            transform.rotation,
+            targetRotation,
+            rotationSpeed * Time.deltaTime
+        );
+
+        // Limit position
+        if (transform.position.x > 10)
+        {
+            transform.position = new Vector3(
+                10,
+                transform.position.y,
+                transform.position.z
+            );
+        }
+        else if (transform.position.x < -10)
+        {
+            transform.position = new Vector3(
+                -10,
+                transform.position.y,
+                transform.position.z
+            );
         }
     }
 }

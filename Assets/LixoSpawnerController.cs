@@ -62,21 +62,4 @@ public class LixoSpawnerController : MonoBehaviour
         pointsText.text = "Pontuação: 0";
         victoryText.gameObject.SetActive(false);
     }
-
-    private void comecar()
-    {
-        GameObject Menu = GameObject.FindWithTag("Menu");
-        if (counter < 1)
-        {
-            if (Menu.activeInHierarchy == false)
-            {
-
-            }
-        }
-    }
-
-    void Update()
-    {
-
-    }
 }
